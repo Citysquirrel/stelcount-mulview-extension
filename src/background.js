@@ -86,4 +86,7 @@ chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => 
 	if (request.message === "isInstalled") {
 		sendResponse({ installed: true });
 	}
+	if (request.message === "versionInfo") {
+		sendResponse({ version: "1.1.0" });
+	}
 });
