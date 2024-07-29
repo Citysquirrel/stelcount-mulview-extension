@@ -81,3 +81,9 @@ chrome.cookies.onChanged.addListener(async ({ cookie, removed }) => {
 		}
 	}
 });
+
+chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => {
+	if (request.message === "isInstalled") {
+		sendResponse({ installed: true });
+	}
+});

@@ -9,15 +9,14 @@
 try {
 	window.top.location.hostname;
 } catch {
-	console.log(document);
 	if (window.location.hostname === "chzzk.naver.com") {
 		const script = document.createElement("script");
-		script.src = chrome.runtime.getURL("./src/chzzk.js");
+		script.src = chrome.runtime.getURL("src/chzzk.js");
 		script.onload = () => {
 			console.log("script loaded successfully");
 		};
-		script.onerror = (err) => {
-			console.log("script failed to load: 스크립트 파일이 비공개 또는 삭제되었습니다.", err);
+		script.onerror = () => {
+			console.log("script failed to load");
 		};
 
 		document.body.appendChild(script);
