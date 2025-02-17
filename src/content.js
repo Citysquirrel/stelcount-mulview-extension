@@ -5,13 +5,14 @@
 // Copyright (c) 2024 jebibot
 // This file is licensed under the MIT License.
 // See the LICENSE file in the project root for more information.
+const browser = window.browser || window.chrome;
 
 try {
 	window.top.location.hostname;
 } catch {
 	if (window.location.hostname === "chzzk.naver.com") {
 		const script = document.createElement("script");
-		script.src = chrome.runtime.getURL("src/chzzk.js");
+		script.src = browser.runtime.getURL("src/chzzk.js");
 		script.onload = () => {
 			console.log("script loaded successfully");
 		};

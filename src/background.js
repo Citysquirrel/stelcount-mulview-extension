@@ -6,6 +6,8 @@
 // This file is licensed under the MIT License.
 // See the LICENSE file in the project root for more information.
 
+const browser = window.browser || window.chrome;
+
 const COOKIES = [
 	{
 		name: "NID_AUT",
@@ -20,12 +22,12 @@ const COOKIES = [
 ];
 
 const checkPermission = async () => {
-	const granted = await chrome.permissions.contains({
+	const granted = await browser.permissions.contains({
 		origins: ["*://*.stelcount.fans/*", "*://*.naver.com/*", "*://*.chzzk.naver.com/*"],
 	});
 	if (!granted) {
-		chrome.tabs.create({
-			url: chrome.runtime.getURL("permission.html"),
+		browser.tabs.create({
+			url: browser.runtime.getURL("permission.html"),
 		});
 	}
 	return granted;
@@ -38,39 +40,39 @@ const setPartitonedCookie = async (cookie, url) => {
 	}
 	delete cookie.hostOnly;
 	delete cookie.session;
-	await chrome.cookies.set({
+	await browser.cookies.set({
 		...cookie,
-		sameSite: chrome.cookies.SameSiteStatus.NO_RESTRICTION,
+		sameSite: browser.cookies.SameSiteStatus.NO_RESTRICTION,
 		secure: true,
 		url,
 		partitionKey,
 	});
 };
 
-chrome.runtime.onInstalled.addListener(checkPermission);
-chrome.runtime.onStartup.addListener(async () => {
+browser.runtime.onInstalled.addListener(checkPermission);
+browser.runtime.onStartup.addListener(async () => {
 	const granted = await checkPermission();
 	if (!granted) {
 		return;
 	}
 	for (const { name, url } of COOKIES) {
-		const cookie = await chrome.cookies.get({ name, url });
+		const cookie = await browser.cookies.get({ name, url });
 		if (cookie != null) {
 			await setPartitonedCookie(cookie, url);
 		}
 	}
 });
 
-chrome.permissions.onRemoved.addListener(checkPermission);
+browser.permissions.onRemoved.addListener(checkPermission);
 
-chrome.storage.local.onChanged.addListener(({ streams }) => {
+browser.storage.local.onChanged.addListener(({ streams }) => {
 	if (streams != null) {
-		chrome.action.setBadgeBackgroundColor({ color: "#737373" });
-		chrome.action.setBadgeText({ text: `${streams.newValue.length}` });
+		browser.action.setBadgeBackgroundColor({ color: "#737373" });
+		browser.action.setBadgeText({ text: `${streams.newValue.length}` });
 	}
 });
 
-chrome.cookies.onChanged.addListener(async ({ cookie, removed }) => {
+browser.cookies.onChanged.addListener(async ({ cookie, removed }) => {
 	if (removed) {
 		return;
 	}
@@ -82,7 +84,7 @@ chrome.cookies.onChanged.addListener(async ({ cookie, removed }) => {
 	}
 });
 
-chrome.runtime.onMessageExternal.addListener((request, sender, sendResponse) => {
+browser.runtime.onMessageExternal.addListener((request, sender, sendResponse) => {
 	if (request.message === "isInstalled") {
 		sendResponse({ installed: true });
 	}

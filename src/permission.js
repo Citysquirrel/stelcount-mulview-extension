@@ -1,5 +1,7 @@
+const browser = window.browser || window.chrome;
+
 document.getElementById("apply").addEventListener("click", () => {
-	chrome.permissions
+	browser.permissions
 		.request({
 			origins: ["*://*.stelcount.fans/*", "*://*.naver.com/*", "*://*.chzzk.naver.com/*"],
 		})

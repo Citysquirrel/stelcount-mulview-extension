@@ -1,5 +1,7 @@
+const browser = window.browser || window.chrome;
+
 document.getElementById("goto").addEventListener("click", () => {
-	chrome.tabs.create({
+	browser.tabs.create({
 		url: "https://stelcount.fans/multiview",
 	});
 });

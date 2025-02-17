@@ -31,5 +31,6 @@
 	],
 	"background": {
 		"service_worker": "src/background.js"
-	}
+	},
+	"optional_permissions": ["cookies", "tabs", "*://*.stelcount.fans/*", "*://*.naver.com/*", "*://*.chzzk.naver.com/*"]
 }
