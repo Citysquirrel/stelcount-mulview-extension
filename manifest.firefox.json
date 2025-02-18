@@ -30,13 +30,15 @@
 		}
 	],
 	"background": {
-		"page": ["src/background.html"],
+		"scripts": ["src/background.js"],
+		"page": "src/background.html",
+		"service_worker": "src/background.js",
 		"persistent": false
 	},
 	"optional_permissions": ["cookies", "tabs", "*://*.stelcount.fans/*", "*://*.naver.com/*", "*://*.chzzk.naver.com/*"],
 	"browser_specific_settings": {
 		"gecko": {
-			"id": "stelcount@mozilla.org"
+			"id": "stelcount@stelcount.fans"
 		}
 	}
 }
