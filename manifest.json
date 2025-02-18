@@ -30,7 +30,7 @@
 		}
 	],
 	"background": {
-		"scripts": ["src/background.js"],
+		"page": ["src/background.html"],
 		"persistent": false
 	},
 	"optional_permissions": ["cookies", "tabs", "*://*.stelcount.fans/*", "*://*.naver.com/*", "*://*.chzzk.naver.com/*"],
