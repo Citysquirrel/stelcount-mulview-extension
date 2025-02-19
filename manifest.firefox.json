@@ -32,8 +32,7 @@
 	"background": {
 		"scripts": ["src/background.js"],
 		"page": "src/background.html",
-		"service_worker": "src/background.js",
-		"persistent": false
+		"service_worker": "src/background.js"
 	},
 	"optional_permissions": ["cookies", "tabs", "*://*.stelcount.fans/*", "*://*.naver.com/*", "*://*.chzzk.naver.com/*"],
 	"browser_specific_settings": {
