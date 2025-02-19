@@ -1,12 +1,11 @@
 {
-	"manifest_version": 3,
+	"manifest_version": 2,
 	"name": "StelCount MultiView Extension",
 	"description": "스텔카운트의 멀티뷰를 위한 확장프로그램",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"homepage_url": "https://stelcount.fans/multiview",
-	"permissions": ["activeTab", "cookies", "storage"],
-	"host_permissions": ["*://*.naver.com/*", "*://*.stelcount.fans/*"],
-	"action": {
+	"permissions": ["activeTab", "cookies", "storage", "tabs", "*://*.naver.com/*", "*://*.stelcount.fans/*"],
+	"browser_action": {
 		"default_popup": "src/popup.html",
 		"default_icon": "images/icon.png"
 	},
@@ -23,16 +22,10 @@
 			"exclude_globs": ["*://api.chzzk.naver.com/*"]
 		}
 	],
-	"web_accessible_resources": [
-		{
-			"resources": ["src/chzzk.js"],
-			"matches": ["*://*.chzzk.naver.com/*"]
-		}
-	],
+	"web_accessible_resources": ["src/chzzk.js", "src/permission.html"],
 	"background": {
 		"scripts": ["src/background.js"],
-		"page": "src/background.html",
-		"service_worker": "src/background.js"
+		"persistent": false
 	},
 	"optional_permissions": ["cookies", "tabs", "*://*.stelcount.fans/*", "*://*.naver.com/*", "*://*.chzzk.naver.com/*"],
 	"browser_specific_settings": {
