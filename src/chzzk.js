@@ -113,11 +113,42 @@
 		if (chattingContainer == null) {
 			return;
 		}
-		setTimeout(() => {
-			chattingContainer
-				.querySelector('[class*="live_chatting_header_fold__"] > [class^="live_chatting_header_button__"]')
-				?.click();
-		}, 300);
+
+		const clickButtonWithInterval = (delay) => {
+			return new Promise((resolve, reject) => {
+				const startTime = Date.now();
+
+				const interval = setInterval(() => {
+					const button = chattingContainer.querySelector(
+						'[class*="live_chatting_header_fold__"] > [class^="live_chatting_header_button__"]'
+					);
+
+					if (button) {
+						button.click();
+						// console.log(`클릭됨 (${delay}ms 지연):`, new Date().toLocaleTimeString());
+						clearInterval(interval);
+						resolve(`지연 ${delay}ms 후 클릭 성공`);
+					} else if (Date.now() - startTime > delay + 3500) {
+						// 3500ms 이후 자동 종료
+						clearInterval(interval);
+						// console.error(`지연 ${delay}ms 후 클릭 실패: 버튼을 찾을 수 없음`);
+						reject(`지연 ${delay}ms 후 클릭 실패`);
+					}
+				}, 500); // 500ms마다 버튼 존재 여부 확인
+			});
+		};
+
+		const runClicks = async () => {
+			const delay = 300;
+			try {
+				const result = await new Promise((res) => setTimeout(res, delay));
+				await clickButtonWithInterval(delay);
+			} catch (error) {
+				console.error(error);
+			}
+		};
+
+		runClicks();
 	};
 
 	// const initVolumeFeatures =  (controllerContainer) => {
