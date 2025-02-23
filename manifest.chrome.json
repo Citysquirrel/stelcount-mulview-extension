@@ -5,7 +5,12 @@
 	"version": "1.1.0",
 	"homepage_url": "https://stelcount.fans/multiview",
 	"permissions": ["activeTab", "cookies", "storage"],
-	"host_permissions": ["*://*.naver.com/*", "*://*.stelcount.fans/*"],
+	"host_permissions": [
+		"*://*.naver.com/*",
+		"*://*.stelcount.fans/*",
+		"https://chzzk.naver.com/*",
+		"https://api.chzzk.naver.com/*"
+	],
 	"action": {
 		"default_popup": "src/popup.html",
 		"default_icon": "images/icon.png"
