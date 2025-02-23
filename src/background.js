@@ -92,3 +92,71 @@ browser.runtime.onMessageExternal.addListener((request, sender, sendResponse) =>
 		sendResponse({ version: "1.1.0" });
 	}
 });
+
+// fetchFollowings를 팝업 쪽으로 전송
+browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
+	if (request.action === "fetchFollowings") {
+		fetchFollowings()
+			.then((data) => sendResponse({ success: true, data }))
+			.catch((error) => sendResponse({ success: false, error: error.message }));
+		return true;
+	}
+});
+
+async function fetchFollowings() {
+	try {
+		const cookies = await Promise.all(
+			COOKIES.map(({ name, url }) =>
+				browser.cookies.get({ name, url }).catch((err) => {
+					console.error(`쿠키(${name})를 가져오는 중 문제 발생`, err);
+					return null;
+				})
+			)
+		);
+
+		const missingCookies = cookies.filter((c) => !c);
+		if (missingCookies.length > 0) {
+			throw new Error(
+				"일부 쿠키를 가져오지 못함. 기존에 네이버 로그인 된 상태에서도 본 에러가 발생한다면 개발자에게 문의 바랍니다."
+			);
+		}
+
+		const api = `https://api.chzzk.naver.com/service/v1/channels/followings${objectToUrlParams({
+			page: 0,
+			size: 505,
+			sortType: "FOLLOW",
+			subscription: false,
+			followerCount: false,
+		})}`;
+
+		const [aut, ses] = cookies;
+
+		const NID_AUT = aut.value;
+		const NID_SES = ses.value;
+
+		const response = await fetch(api, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Cookie: `NID_AUT=${NID_AUT}; NID_SES=${NID_SES}`,
+			},
+			credentials: "include",
+		});
+
+		if (!response.ok) {
+			throw new Error(`API 요청 실패: ${response.status}`);
+		}
+
+		const data = await response.json();
+		return data;
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+function objectToUrlParams(object) {
+	const params = Object.entries(object)
+		.map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+		.join("&");
+	return `?${params}`;
+}
