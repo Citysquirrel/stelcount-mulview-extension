@@ -151,6 +151,7 @@ async function fetchFollowings() {
 		return data;
 	} catch (error) {
 		console.error(error);
+		return null;
 	}
 }
 

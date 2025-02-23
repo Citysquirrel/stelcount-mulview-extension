@@ -24,3 +24,18 @@ button {
 button:hover {
 	background-color: rgb(227, 227, 227);
 }
+
+#followings {
+	margin-top: 8px;
+	height: 300px;
+	max-height: 300px;
+	overflow-y: auto;
+}
+
+.live-dot {
+	color: crimson;
+}
+
+.is-live {
+	color: rgb(29, 181, 105) !important;
+}
