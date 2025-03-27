@@ -4,7 +4,7 @@
 	"description": "스텔카운트의 멀티뷰를 위한 확장프로그램",
 	"version": "1.1.1",
 	"homepage_url": "https://stelcount.fans/multiview",
-	"permissions": ["activeTab", "cookies", "storage"],
+	"permissions": ["activeTab", "cookies", "storage", "notifications"],
 	"host_permissions": [
 		"*://*.naver.com/*",
 		"*://*.stelcount.fans/*",
@@ -30,7 +30,7 @@
 	],
 	"web_accessible_resources": [
 		{
-			"resources": ["src/chzzk.js"],
+			"resources": ["src/chzzk.js", "images/icon.png"],
 			"matches": ["*://*.chzzk.naver.com/*"]
 		}
 	],

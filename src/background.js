@@ -49,6 +49,25 @@ const setPartitonedCookie = async (cookie, url) => {
 	});
 };
 
+browser.runtime.onInstalled.addListener((details) => {
+	if (details.reason === "update") {
+		browser.notifications.create({
+			type: "basic",
+			iconUrl: browser.runtime.getURL("images/icon.png"),
+			title: "새로운 업데이트!",
+			message: "확장이 최신 버전으로 업데이트되었습니다. 변경 사항을 확인하세요.",
+		});
+	}
+});
+
+browser.notifications.onClicked.addListener((notificationId) => {
+	browser.notifications.clear(notificationId, () => {
+		const extensionId = "aldeieecngphbbepbpljdafgibcfmima";
+		const storeUrl = `https://chrome.google.com/webstore/detail/${extensionId}`;
+		browser.tabs.create({ url: storeUrl });
+	});
+});
+
 browser.runtime.onInstalled.addListener(checkPermission);
 browser.runtime.onStartup.addListener(async () => {
 	const granted = await checkPermission();
