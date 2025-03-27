@@ -7,11 +7,6 @@
 // See the LICENSE file in the project root for more information.
 
 (() => {
-	try {
-		window.parent.location.hostname;
-		return;
-	} catch {}
-
 	const getReactFiber = (node) => {
 		if (node == null) {
 			return;
