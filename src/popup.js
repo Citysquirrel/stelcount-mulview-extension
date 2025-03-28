@@ -6,7 +6,7 @@ document.getElementById("goto").addEventListener("click", () => {
 	});
 });
 
-document.getElementById("fetchFollowings").addEventListener("click", () => {
+document.getElementById("fetch-followings").addEventListener("click", () => {
 	const followingsDiv = document.getElementById("followings");
 	followingsDiv.innerHTML = "불러오는 중...";
 
@@ -25,73 +25,70 @@ function displayFollowings(data) {
 	followingsDiv.innerHTML = "";
 
 	if (!data || data.code !== 200 || !data.content) {
-		followingsDiv.innerHTML = "<p>팔로우 목록이 없습니다.</p>";
+		followingsDiv.innerHTML = "<p>네트워크 오류</p>";
 		return;
 	}
 
 	const { followingList } = data.content;
 
 	if (followingList.length === 0) {
-		container.textContent = "팔로우한 채널이 없습니다.";
+		followingsDiv.textContent = "팔로우한 채널이 없습니다.";
 		return;
 	}
 
-	followingList.forEach((following) => {
-		const { channel, streamer, liveInfo } = following;
-		const channelName = channel.channelName || "알 수 없는 채널";
+	followingList
+		.sort((a, b) => (a.streamer.openLive ? -1 : 1) - (b.streamer.openLive ? -1 : 1))
+		.forEach((following) => {
+			const { channel, streamer, liveInfo } = following;
+			const channelName = channel.channelName || "알 수 없는 채널";
+			const channelImageUrl = channel.channelImageUrl;
 
-		const div = document.createElement("div");
-		div.className = "following";
+			const followingWrapper = document.createElement("div");
+			followingWrapper.className = "following";
 
-		// 채널명 및 라이브 여부
-		const title = document.createElement("h3");
-		title.textContent = channelName;
+			// Wrapper: 이미지, 채널명 및 라이브 여부
+			const followingInfo = document.createElement("div");
+			followingInfo.className = "following-info";
 
-		// 라이브 여부
+			// 프로필 이미지
+			const liveProfileImage = document.createElement("img");
+			liveProfileImage.src = channelImageUrl;
+			liveProfileImage.className = "following-image";
 
-		const liveIndicator = document.createElement("span");
-		liveIndicator.className = "live-dot";
-		liveIndicator.textContent = "●";
-		if (streamer.openLive) {
-			liveIndicator.classList.add = "is-live";
-		}
-		title.appendChild(liveIndicator);
+			followingInfo.appendChild(liveProfileImage);
 
-		// 라이브 타이틀
-		const liveTitle = document.createElement("p");
-		liveTitle.textContent = liveInfo.liveTitle ? `제목: ${liveInfo.liveTitle}` : "라이브 제목 없음";
+			// 채널명
+			const followingName = document.createElement("span");
+			followingName.className = "following-name";
+			followingName.textContent = channelName;
 
-		div.appendChild(title);
-		div.appendChild(liveTitle);
+			followingInfo.appendChild(followingName);
 
-		container.appendChild(div);
+			// 라이브 여부
 
-		/**	*	팔로워 API 응답 데이터 구조
- 		interface Followings {
-			code: number;
-			message: string | null;
-			content?: FollowingsContent;
-		}
+			const liveIndicator = document.createElement("span");
+			liveIndicator.className = "live-dot";
+			liveIndicator.textContent = "●";
+			if (streamer.openLive) {
+				liveIndicator.classList.add("is-live");
+			}
+			followingInfo.appendChild(liveIndicator);
 
-		interface FollowingsContent {
-			totalCount: number;
-			totalPage: number;
-			followingList: FollowingList[];
-		}
+			// 라이브 타이틀
+			const liveTitle = document.createElement("div");
+			liveTitle.className = "following-live_title";
+			liveTitle.textContent = liveInfo.liveTitle ? `제목: ${liveInfo.liveTitle}` : "방송 종료됨";
 
-		interface FollowingList {
-			channelId: string;
-			channel: ChannelDetail & { personalData: PersonalData };
-			streamer: { openLive: boolean };
-			liveInfo: { liveTitle: string | null, concurrentUserCount: number, liveCategoryValue: string };
-		} 
+			followingWrapper.appendChild(followingInfo);
+			followingWrapper.appendChild(liveTitle);
 
-		interface ChannelDetail {
-			channelId: string | null;
-			channelName: string;
-			channelImageUrl: string | null;
-			verifiedMark: boolean;
-		}
-*/
-	});
+			followingsDiv.appendChild(followingWrapper);
+
+			// 업로드 svg
+			const uploadImageWrapper = document.createElement("div");
+			uploadImageWrapper.classList = "following-upload-image";
+			uploadImageWrapper.innerHTML = `<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="200px" width="200px" xmlns="http://www.w3.org/2000/svg"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`;
+
+			followingWrapper.appendChild(uploadImageWrapper);
+		});
 }

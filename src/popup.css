@@ -25,17 +25,88 @@ button:hover {
 	background-color: rgb(227, 227, 227);
 }
 
+h3 {
+	margin-block: 0.35em;
+}
+
+#followings-title {
+	cursor: help;
+}
+
 #followings {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
 	margin-top: 8px;
 	height: 300px;
 	max-height: 300px;
 	overflow-y: auto;
 }
 
+.following {
+	position: relative;
+	border: 1px solid white;
+	border-radius: 0.125rem;
+	padding: 2px 4px;
+	cursor: pointer;
+	user-select: none;
+}
+
+.following:hover > .following-upload-image {
+	opacity: 1;
+}
+
+.following-info {
+	display: flex;
+	flex-direction: row;
+	gap: 2px;
+	align-items: center;
+	padding-left: 2px;
+	font-size: 0.875rem;
+	font-weight: bold;
+}
+
+.following-image {
+	display: block;
+	width: 1rem;
+	height: 1rem;
+	border-radius: 100%;
+}
+
+.following-live_title {
+	font-size: 0.625rem;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.following-upload-image {
+	position: absolute;
+	top: 6px;
+	right: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	border-radius: 100%;
+	background-color: rgb(237, 239, 255);
+	overflow: hidden;
+	opacity: 0;
+	transition: 0.3s all;
+}
+
+.following-upload-image > svg {
+	width: 16px;
+	height: 16px;
+}
+
 .live-dot {
 	color: crimson;
+	margin-left: 1px;
+	filter: blur(0.5px);
 }
 
 .is-live {
-	color: rgb(29, 181, 105) !important;
+	color: rgb(79, 255, 167) !important;
 }
