@@ -77,7 +77,7 @@ function displayFollowings(data) {
 			// 라이브 타이틀
 			const liveTitle = document.createElement("div");
 			liveTitle.className = "following-live_title";
-			liveTitle.textContent = liveInfo.liveTitle ? `제목: ${liveInfo.liveTitle}` : "방송 종료됨";
+			liveTitle.textContent = liveInfo.liveTitle ? `${liveInfo.liveTitle}` : "방송 종료됨";
 
 			followingWrapper.appendChild(followingInfo);
 			followingWrapper.appendChild(liveTitle);

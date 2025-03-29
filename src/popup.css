@@ -48,8 +48,13 @@ h3 {
 	border: 1px solid white;
 	border-radius: 0.125rem;
 	padding: 2px 4px;
+	background-color: rgb(245, 245, 245);
 	cursor: pointer;
 	user-select: none;
+}
+
+.following:hover {
+	background-color: rgb(202, 202, 202);
 }
 
 .following:hover > .following-upload-image {
