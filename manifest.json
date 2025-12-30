@@ -23,7 +23,7 @@
 	"content_scripts": [
 		{
 			"all_frames": true,
-			"js": ["src/content.js"],
+			"js": ["src/content.js", "src/public.js"],
 			"matches": ["*://*.chzzk.naver.com/*"],
 			"exclude_globs": ["*://api.chzzk.naver.com/*"]
 		}
