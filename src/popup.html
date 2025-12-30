@@ -6,11 +6,20 @@
 		<link rel="stylesheet" href="popup.css" />
 	</head>
 	<body>
-		<button id="goto">스텔카운트 멀티뷰로 이동</button>
-		<hr />
-		<h3 id="follwings-title" title="로그인 된 네이버 계정의 팔로우 목록을 불러옵니다.">내 팔로우 목록 불러오기</h3>
-		<button id="fetch-followings">불러오기</button>
-		<div id="followings"></div>
+		<div class="title-wrapper">
+			<img class="logo" src="../images/icon.png" />
+		</div>
+		<div class="whole-container">
+			<div class="text-container">
+				<p>- 브라우저가 네이버에 로그인되어 있는 경우 멀티뷰에서의 로그인 인증</p>
+				<p>- 새로운 방송을 띄울 때 자동으로 넓은 화면 전환 및 채팅창 제거 기능</p>
+				<p>- 채팅창 상단 고정 리스트 숨기기/표시 버튼 추가</p>
+			</div>
+			<div class="center-wrapper">
+				<button id="goto">멀티뷰 열기</button>
+			</div>
+		</div>
+
 		<script src="./popup.js"></script>
 	</body>
 </html>
