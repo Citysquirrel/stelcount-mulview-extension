@@ -2,7 +2,7 @@
 	"manifest_version": 3,
 	"name": "StelCount MultiView Extension",
 	"description": "스텔카운트의 멀티뷰를 위한 확장프로그램",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"homepage_url": "https://stelcount.fans/multiview",
 	"permissions": ["activeTab", "cookies", "storage", "notifications"],
 	"host_permissions": [
