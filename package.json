@@ -5,6 +5,12 @@
 	"main": "index.js",
 	"keywords": [],
 	"author": "",
-	"license": "ISC"
+	"license": "ISC",
+	"scripts": {
+		"zip": "node scripts/zip-ext.js"
+	},
+	"devDependencies": {
+		"archiver": "^7.0.1",
+		"fs-extra": "^11.3.3"
+	}
 }
-
