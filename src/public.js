@@ -1,6 +1,6 @@
 //? 고정챗 래퍼 접기
 (() => {
-	console.log("chat list button initializing...");
+	console.log("[StelCount] chat list button initializing...");
 	const INIT_FLAG = "data-chat-toggle-init";
 	const CONTAINER_SELECTOR = '[class^="live_chatting_list_container__"]';
 	const CHAT_SELECTOR = '[class^="live_chatting_list_fixed__"]';
@@ -85,6 +85,7 @@
 		applyState(chatWrapper, btn);
 	}
 
+	// #region Observing
 	const observer = new MutationObserver(() => {
 		const container = document.querySelector(CONTAINER_SELECTOR);
 		if (!container) return;
@@ -106,5 +107,21 @@
 	observer.observe(document.body, {
 		childList: true,
 		subtree: true,
+	});
+
+	// #endregion
+
+	// 상태 의존적이지 않도록 처리
+	window.addEventListener("storage", (e) => {
+		if (e.key !== STORAGE_KEY) return;
+
+		const container = document.querySelector(CONTAINER_SELECTOR);
+		if (!container) return;
+
+		const chatWrapper = container.querySelector(CHAT_SELECTOR);
+		const btn = container.querySelector(`#${BTN_ID}`);
+		if (!chatWrapper || !btn) return;
+
+		applyState(chatWrapper, btn);
 	});
 })();

@@ -14,10 +14,10 @@ try {
 		const script = document.createElement("script");
 		script.src = chrome.runtime.getURL("src/chzzk.js");
 		script.onload = () => {
-			console.log("script loaded successfully");
+			console.log("[StelCount] script loaded successfully");
 		};
 		script.onerror = () => {
-			console.log("script failed to load");
+			console.log("[StelCount] script failed to load");
 		};
 
 		document.body.appendChild(script);
@@ -25,6 +25,9 @@ try {
 }
 
 //! 삭제 예정. 기능 축소 및 팝업 간소화 진행
+//TODO ㄴㄴ 삭제보단 어떤식으로 확장할지 다시 고민
+// 이거 개인정보가 문제면 개인정보를 내가 직접 사용하는게 아니라 사용자가 나에게 제공하는 방식으로 가면 될듯?
+// 편의성 최대한 챙겨주는 방향으로 가고싶으면.. 그정도는 감수하라는 스탠스?
 // // 페이지 로드시 체크 확인 & 실행
 // chrome.storage.sync.get("subconToFront", (data) => {
 // 	if (data.subconToFront) {
