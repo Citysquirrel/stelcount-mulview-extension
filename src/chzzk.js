@@ -157,28 +157,28 @@
 		// setLiveWide?.[0](true);
 	};
 
-	const initChatFeatures = async (chattingContainer) => {
-		if (chattingContainer == null) {
-			return;
-		}
+	// const initChatFeatures = async (chattingContainer) => {
+	// 	if (chattingContainer == null) {
+	// 		return;
+	// 	}
 
-		const runClicks = async () => {
-			const delay = 300;
-			try {
-				const result = await new Promise((res) => setTimeout(res, delay));
-				await clickButtonWithInterval(
-					delay,
-					chattingContainer.querySelector(
-						'[class*="live_chatting_header_fold__"] > [class^="live_chatting_header_button__"]'
-					)
-				);
-			} catch (error) {
-				console.error(error);
-			}
-		};
+	// 	const runClicks = async () => {
+	// 		const delay = 300;
+	// 		try {
+	// 			const result = await new Promise((res) => setTimeout(res, delay));
+	// 			await clickButtonWithInterval(
+	// 				delay,
+	// 				chattingContainer.querySelector(
+	// 					'[class*="live_chatting_header_fold__"] > [class^="live_chatting_header_button__"]'
+	// 				)
+	// 			);
+	// 		} catch (error) {
+	// 			console.error(error);
+	// 		}
+	// 	};
 
-		runClicks();
-	};
+	// 	runClicks();
+	// };
 
 	const attachLiveObserver = (node) => {
 		if (node == null) {
@@ -218,24 +218,65 @@
 		]);
 	};
 
-	function clickButtonWithInterval(delay, node) {
-		return new Promise((resolve, reject) => {
-			const startTime = Date.now();
+	// function clickButtonWithInterval(delay, node) {
+	// 	return new Promise((resolve, reject) => {
+	// 		const startTime = Date.now();
 
-			const interval = setInterval(() => {
-				const button = node;
+	// 		const interval = setInterval(() => {
+	// 			const button = node;
 
-				if (button) {
-					button.click();
-					clearInterval(interval);
-					resolve(`지연 ${delay}ms 후 클릭 성공`);
-				} else if (Date.now() - startTime > delay + 3500) {
-					clearInterval(interval);
-					reject(`지연 ${delay}ms 후 클릭 실패`);
-				}
-			}, 500); // 500ms마다 버튼 존재 여부 확인
-		});
-	}
+	// 			if (button) {
+	// 				button.click();
+	// 				clearInterval(interval);
+	// 				resolve(`지연 ${delay}ms 후 클릭 성공`);
+	// 			} else if (Date.now() - startTime > delay + 3500) {
+	// 				clearInterval(interval);
+	// 				reject(`지연 ${delay}ms 후 클릭 실패`);
+	// 			}
+	// 		}, 500); // 500ms마다 버튼 존재 여부 확인
+	// 	});
+	// }
+
+	const initChatFeatures = async (chattingContainer) => {
+		if (!chattingContainer) return;
+
+		const SELECTOR = '[class*="live_chatting_header_fold__"] > [class^="live_chatting_header_button__"]';
+
+		const waitForButton = (root, selector, timeout = 7000) =>
+			new Promise((resolve, reject) => {
+				const found = root.querySelector(selector);
+				if (found) return resolve(found);
+
+				const observer = new MutationObserver(() => {
+					const el = root.querySelector(selector);
+					if (el) {
+						observer.disconnect();
+						resolve(el);
+					}
+				});
+
+				observer.observe(root, { childList: true, subtree: true });
+
+				setTimeout(() => {
+					observer.disconnect();
+					reject("[StelCount] 채팅 토글 버튼 탐색 타임아웃");
+				}, timeout);
+			});
+
+		try {
+			const button = await waitForButton(chattingContainer, SELECTOR);
+
+			// 👉 상태 판별 (실제 클래스/속성에 맞게 조정)
+			const isOpened = !button.classList.contains("folded");
+
+			if (isOpened) {
+				button.click();
+				console.log("[StelCount] 채팅창 자동 닫기 완료");
+			}
+		} catch (e) {
+			console.warn("[StelCount] 채팅창 자동 닫기 실패:", e);
+		}
+	};
 
 	function clickWideButtonWithInterval(delay, node) {
 		return new Promise((resolve, reject) => {
