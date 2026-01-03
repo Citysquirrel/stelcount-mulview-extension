@@ -91,10 +91,14 @@
 		if (!container) return;
 
 		const chatWrapper = container.querySelector(CHAT_SELECTOR);
+		const btn = container.querySelector(`#${BTN_ID}`);
 
 		// 채팅이 사라졌으면 init 플래그 리셋
-		if (!chatWrapper && container.hasAttribute(INIT_FLAG)) {
-			container.removeAttribute(INIT_FLAG);
+		if (!chatWrapper) {
+			if (btn) btn.remove(); // 버튼 제거
+			if (container.hasAttribute(INIT_FLAG)) {
+				container.removeAttribute(INIT_FLAG);
+			}
 			return;
 		}
 
