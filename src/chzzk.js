@@ -149,36 +149,7 @@
 		};
 
 		runClicks();
-
-		// const setLiveWide = await findReactState(
-		// 	node,
-		// 	(state) => state[0]?.length === 1 && state[1]?.length === 2 && state[1]?.[1]?.key === "isLiveWide"
-		// );
-		// setLiveWide?.[0](true);
 	};
-
-	// const initChatFeatures = async (chattingContainer) => {
-	// 	if (chattingContainer == null) {
-	// 		return;
-	// 	}
-
-	// 	const runClicks = async () => {
-	// 		const delay = 300;
-	// 		try {
-	// 			const result = await new Promise((res) => setTimeout(res, delay));
-	// 			await clickButtonWithInterval(
-	// 				delay,
-	// 				chattingContainer.querySelector(
-	// 					'[class*="live_chatting_header_fold__"] > [class^="live_chatting_header_button__"]'
-	// 				)
-	// 			);
-	// 		} catch (error) {
-	// 			console.error(error);
-	// 		}
-	// 	};
-
-	// 	runClicks();
-	// };
 
 	const attachLiveObserver = (node) => {
 		if (node == null) {
@@ -218,36 +189,26 @@
 		]);
 	};
 
-	// function clickButtonWithInterval(delay, node) {
-	// 	return new Promise((resolve, reject) => {
-	// 		const startTime = Date.now();
-
-	// 		const interval = setInterval(() => {
-	// 			const button = node;
-
-	// 			if (button) {
-	// 				button.click();
-	// 				clearInterval(interval);
-	// 				resolve(`지연 ${delay}ms 후 클릭 성공`);
-	// 			} else if (Date.now() - startTime > delay + 3500) {
-	// 				clearInterval(interval);
-	// 				reject(`지연 ${delay}ms 후 클릭 실패`);
-	// 			}
-	// 		}, 500); // 500ms마다 버튼 존재 여부 확인
-	// 	});
-	// }
-
 	const initChatFeatures = async (chattingContainer) => {
 		if (!chattingContainer) return;
 
 		const SELECTOR = '[class*="live_chatting_header_fold__"] > [class^="live_chatting_header_button__"]';
 
+		let executed = false;
+
 		const waitForButton = (root, selector, timeout = 7000) =>
 			new Promise((resolve, reject) => {
+				if (executed) return; // 이미 처리됐으면 아무것도 안 함
+
 				const found = root.querySelector(selector);
 				if (found) return resolve(found);
 
 				const observer = new MutationObserver(() => {
+					if (executed) {
+						observer.disconnect();
+						return;
+					}
+
 					const el = root.querySelector(selector);
 					if (el) {
 						observer.disconnect();
@@ -265,9 +226,12 @@
 
 		try {
 			const button = await waitForButton(chattingContainer, SELECTOR);
+			if (!button || executed) return;
 
-			// 👉 상태 판별 (실제 클래스/속성에 맞게 조정)
 			const isOpened = !button.classList.contains("folded");
+
+			// 이미 닫혀 있어도 처리 완료로 간주
+			executed = true;
 
 			if (isOpened) {
 				button.click();
@@ -296,6 +260,60 @@
 			}, 500); // 500ms마다 버튼 존재 여부 확인
 		});
 	}
+
+	//! 통나무 자동 클릭
+	const LOG_PREFIX = "[StelCount]";
+	const REWARD_NAME = "통나무";
+
+	// 이후 확장을 위한 로그 함수
+	function log(message, extra = null) {
+		if (extra) {
+			console.log(`${LOG_PREFIX} ${message}`, extra);
+		} else {
+			console.log(`${LOG_PREFIX} ${message}`);
+		}
+		// TODO: 로그 저장
+		// chrome.storage.local.get({ logs: [] }, ({ logs }) => {
+		//   chrome.storage.local.set({ logs: [...logs, entry] });
+		// });
+	}
+
+	// 통나무 클릭
+	function clickReward(button) {
+		if (!(button instanceof HTMLButtonElement)) return;
+		if (button.disabled) return;
+
+		button.click();
+
+		log(`${REWARD_NAME} 수집 완료`);
+	}
+
+	//
+	document.querySelectorAll('button[class^="live_chatting_power_button_"]').forEach(clickReward);
+
+	// 통나무 버튼 추적
+	const observer = new MutationObserver((mutations) => {
+		for (const mutation of mutations) {
+			for (const node of mutation.addedNodes) {
+				if (!(node instanceof HTMLElement)) continue;
+
+				// 버튼 자체가 추가된 경우
+				if (node.matches?.('button[class^="live_chatting_power_button_"]')) {
+					clickReward(node);
+				}
+
+				// 부모에 묻어서 같이 추가된 경우
+				node.querySelectorAll?.('button[class^="live_chatting_power_button_"]').forEach(clickReward);
+			}
+		}
+	});
+
+	observer.observe(document.body, {
+		childList: true,
+		subtree: true,
+	});
+
+	log("통나무 자동 수령 시작..");
 
 	(async () => {
 		if (!location.pathname.endsWith("/chat")) {

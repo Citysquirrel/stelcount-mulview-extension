@@ -1,6 +1,6 @@
 //? 고정챗 래퍼 접기
 (() => {
-	console.log("[StelCount] chat list button initializing...");
+	// console.log("[StelCount] chat list button initializing...");
 	const INIT_FLAG = "data-chat-toggle-init";
 	const CONTAINER_SELECTOR = '[class^="live_chatting_list_container__"]';
 	const CHAT_SELECTOR = '[class^="live_chatting_list_fixed__"]';
@@ -129,3 +129,6 @@
 		applyState(chatWrapper, btn);
 	});
 })();
+
+//? 랭킹 끄기
+(() => {})();

@@ -7,6 +7,25 @@
 // See the LICENSE file in the project root for more information.
 // const browser = window.browser || window.chrome;
 
+function sendSettings(settings) {
+	sendToPage("SETTINGS_UPDATE", settings);
+}
+function sendToPage(type, payload) {
+	window.postMessage(
+		{
+			__STELCOUNT__: true,
+			type,
+			payload,
+		},
+		"*",
+	);
+}
+
+window.messanger = {
+	sendSettings,
+	sendToPage,
+};
+
 try {
 	window.top.location.hostname;
 } catch {
@@ -20,9 +39,35 @@ try {
 			console.log("[StelCount] script failed to load");
 		};
 
+		// const bridge = document.createElement("script");
+		// bridge.src = chrome.runtime.getURL("src/bridge.js");
+		// bridge.onload = () => {
+		// 	console.log("[StelCount] bridge loaded successfully");
+		// };
+		// bridge.onerror = () => {
+		// 	console.log("[StelCount] bridge failed to load");
+		// };
+
+		// document.body.appendChild(bridge);
 		document.body.appendChild(script);
 	}
 }
+
+//? 앞으로 아래의 코드만 사용할 것. 위 코드는 계속 사용할 것이나 더 이상 유지보수 하지 않음. 이후 문제 발생시 폐기하고 아래 방식으로 변경할 것
+
+// 초기 설정 전달
+chrome.storage.sync.get(null, (settings) => {
+	sendSettings(settings);
+});
+
+// 실시간 반영 설정
+chrome.storage.onChanged.addListener((changes, area) => {
+	if (area === "sync") {
+		chrome.storage.sync.get(null, (settings) => {
+			sendSettings(settings);
+		});
+	}
+});
 
 //! 삭제 예정. 기능 축소 및 팝업 간소화 진행
 //TODO ㄴㄴ 삭제보단 어떤식으로 확장할지 다시 고민
