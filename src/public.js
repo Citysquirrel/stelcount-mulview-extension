@@ -42,7 +42,7 @@
 
 		Object.assign(btn.style, {
 			position: "absolute",
-			top: "81px",
+			top: "4px",
 			left: "4px",
 			width: "18px",
 			height: "18px",
@@ -54,7 +54,7 @@
 			border: "none",
 			borderRadius: "4px",
 			cursor: "pointer",
-			zIndex: 10,
+			zIndex: 472,
 		});
 
 		btn.title = "채팅 접기 / 펼치기";
