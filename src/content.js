@@ -1,13 +1,4 @@
-// 저작권 © jebibot 2024-
-// 이 코드는 MIT 라이선스에 따라 배포됩니다.
-// 라이선스 사본은 프로젝트 루트에서 확인할 수 있습니다.
-
-// Copyright (c) 2024 jebibot
-// This file is licensed under the MIT License.
-// See the LICENSE file in the project root for more information.
 // const browser = window.browser || window.chrome;
-
-console.log("!!!!!!!!!!");
 
 function sendSettings(settings) {
 	sendToPage("SETTINGS_UPDATE", settings);
@@ -28,32 +19,27 @@ window.messanger = {
 	sendToPage,
 };
 
-try {
-	window.top.location.hostname;
-} catch {
-	if (window.location.hostname === "chzzk.naver.com") {
-		console.log(1234);
-		const script = document.createElement("script");
-		script.src = chrome.runtime.getURL("src/chzzk.js");
-		script.onload = () => {
-			console.log("[StelCount] script loaded successfully");
-		};
-		script.onerror = () => {
-			console.log("[StelCount] script failed to load");
-		};
+if (window.location.hostname === "chzzk.naver.com") {
+	const script = document.createElement("script");
+	script.src = chrome.runtime.getURL("src/chzzk.js");
+	script.onload = () => {
+		console.log("[StelCount] script loaded successfully");
+	};
+	script.onerror = () => {
+		console.log("[StelCount] script failed to load");
+	};
+	document.body.appendChild(script);
 
-		// const bridge = document.createElement("script");
-		// bridge.src = chrome.runtime.getURL("src/bridge.js");
-		// bridge.onload = () => {
-		// 	console.log("[StelCount] bridge loaded successfully");
-		// };
-		// bridge.onerror = () => {
-		// 	console.log("[StelCount] bridge failed to load");
-		// };
+	const public = document.createElement("script");
+	public.src = chrome.runtime.getURL("src/public.js");
 
-		// document.body.appendChild(bridge);
-		document.body.appendChild(script);
-	}
+	public.onload = () => {
+		console.log("[StelCount] public loaded successfully");
+	};
+	public.onerror = () => {
+		console.log("[StelCount] public failed to load");
+	};
+	document.body.appendChild(public);
 }
 
 // 초기 설정 전달

@@ -2,7 +2,7 @@
 	"manifest_version": 3,
 	"name": "StelCount MultiView Extension",
 	"description": "스텔카운트의 멀티뷰를 위한 확장프로그램",
-	"version": "1.3.3",
+	"version": "1.4.0",
 	"homepage_url": "https://stelcount.fans/multiview",
 	"permissions": ["activeTab", "cookies", "storage", "notifications"],
 	"host_permissions": [
@@ -23,14 +23,14 @@
 	"content_scripts": [
 		{
 			"all_frames": true,
-			"js": ["src/content.js", "src/public.js"],
+			"js": ["src/content.js"],
 			"matches": ["*://*.chzzk.naver.com/*"],
 			"exclude_globs": ["*://api.chzzk.naver.com/*"]
 		}
 	],
 	"web_accessible_resources": [
 		{
-			"resources": ["src/chzzk.js", "src/bridge.js", "images/icon.png"],
+			"resources": ["src/chzzk.js", "src/public.js", "src/bridge.js", "images/icon.png"],
 			"matches": ["*://*.chzzk.naver.com/*"]
 		}
 	],

@@ -1,11 +1,3 @@
-// 저작권 © jebibot 2024-
-// 이 코드는 MIT 라이선스에 따라 배포됩니다.
-// 라이선스 사본은 프로젝트 루트에서 확인할 수 있습니다.
-
-// Copyright (c) 2024 jebibot
-// This file is licensed under the MIT License.
-// See the LICENSE file in the project root for more information.
-
 const browser = self.browser || self.chrome;
 
 const COOKIES = [
@@ -129,14 +121,14 @@ async function fetchFollowings() {
 				browser.cookies.get({ name, url }).catch((err) => {
 					console.error(`쿠키(${name})를 가져오는 중 문제 발생`, err);
 					return null;
-				})
-			)
+				}),
+			),
 		);
 
 		const missingCookies = cookies.filter((c) => !c);
 		if (missingCookies.length > 0) {
 			throw new Error(
-				"일부 쿠키를 가져오지 못함. 기존에 네이버 로그인 된 상태에서도 본 에러가 발생한다면 개발자에게 문의 바랍니다."
+				"일부 쿠키를 가져오지 못함. 기존에 네이버 로그인 된 상태에서도 본 에러가 발생한다면 개발자에게 문의 바랍니다.",
 			);
 		}
 
