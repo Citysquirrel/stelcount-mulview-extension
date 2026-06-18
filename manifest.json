@@ -12,7 +12,7 @@
 		"https://api.chzzk.naver.com/*"
 	],
 	"action": {
-		"default_popup": "src/popup.html",
+		"default_popup": "src/pages/popup.html",
 		"default_icon": "images/icon.png"
 	},
 	"icons": {
@@ -23,18 +23,18 @@
 	"content_scripts": [
 		{
 			"all_frames": true,
-			"js": ["src/content.js"],
+			"js": ["src/content/content.js"],
 			"matches": ["*://*.chzzk.naver.com/*"],
 			"exclude_globs": ["*://api.chzzk.naver.com/*"]
 		}
 	],
 	"web_accessible_resources": [
 		{
-			"resources": ["src/chzzk.js", "src/public.js", "src/bridge.js", "images/icon.png"],
+			"resources": ["src/injected/chzzk.js", "src/injected/public.js", "src/injected/bridge.js", "images/icon.png"],
 			"matches": ["*://*.chzzk.naver.com/*"]
 		}
 	],
 	"background": {
-		"service_worker": "src/background.js"
+		"service_worker": "src/background/background.js"
 	}
 }

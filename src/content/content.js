@@ -21,7 +21,7 @@ window.messanger = {
 
 if (window.location.hostname === "chzzk.naver.com") {
 	const script = document.createElement("script");
-	script.src = chrome.runtime.getURL("src/chzzk.js");
+	script.src = chrome.runtime.getURL("src/injected/chzzk.js");
 	script.onload = () => {
 		console.log("[StelCount] script loaded successfully");
 	};
@@ -31,7 +31,7 @@ if (window.location.hostname === "chzzk.naver.com") {
 	document.body.appendChild(script);
 
 	const public = document.createElement("script");
-	public.src = chrome.runtime.getURL("src/public.js");
+	public.src = chrome.runtime.getURL("src/injected/public.js");
 
 	public.onload = () => {
 		console.log("[StelCount] public loaded successfully");
