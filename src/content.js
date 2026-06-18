@@ -7,6 +7,8 @@
 // See the LICENSE file in the project root for more information.
 // const browser = window.browser || window.chrome;
 
+console.log("!!!!!!!!!!");
+
 function sendSettings(settings) {
 	sendToPage("SETTINGS_UPDATE", settings);
 }
@@ -30,6 +32,7 @@ try {
 	window.top.location.hostname;
 } catch {
 	if (window.location.hostname === "chzzk.naver.com") {
+		console.log(1234);
 		const script = document.createElement("script");
 		script.src = chrome.runtime.getURL("src/chzzk.js");
 		script.onload = () => {
@@ -52,8 +55,6 @@ try {
 		document.body.appendChild(script);
 	}
 }
-
-//? 앞으로 아래의 코드만 사용할 것. 위 코드는 계속 사용할 것이나 더 이상 유지보수 하지 않음. 이후 문제 발생시 폐기하고 아래 방식으로 변경할 것
 
 // 초기 설정 전달
 chrome.storage.sync.get(null, (settings) => {

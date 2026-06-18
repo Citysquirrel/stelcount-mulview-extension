@@ -2,8 +2,8 @@
 (() => {
 	// console.log("[StelCount] chat list button initializing...");
 	const INIT_FLAG = "data-stc-chat-toggle-init";
-	const CONTAINER_SELECTOR = '[class^="live_chatting_list_container__"]';
-	const CHAT_SELECTOR = '[class^="live_chatting_list_fixed__"]';
+	const CONTAINER_SELECTOR = '[class^="_exist_fixed_message_"]';
+	const CHAT_SELECTOR = '[class^="_fixed_"]';
 	const BTN_ID = "stc-chat-collapse-toggle-btn";
 	const STORAGE_KEY = "stc-chat-collapsed";
 
@@ -134,8 +134,8 @@
 (() => {
 	// console.log("[StelCount] rank list button initializing...");
 	const INIT_FLAG = "stc-data-ranking-toggle-init";
-	const CONTAINER_SELECTOR = '[class^="live_chatting_container__"]';
-	const RANKING_SELECTOR = '[class^="live_chatting_ranking_container__"]';
+	const CONTAINER_SELECTOR = '[class^="_exist_fixed_message_"]';
+	const RANKING_SELECTOR = '[class^="_ranking_"]';
 	const BTN_ID = "stc-rank-collapse-toggle-btn";
 	const STORAGE_KEY = "stc-rank-collapsed";
 
@@ -145,6 +145,7 @@
 
 	function setCollapsed(value) {
 		localStorage.setItem(STORAGE_KEY, String(value));
+		s;
 	}
 
 	function applyState(rankWrapper, btn) {

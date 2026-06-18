@@ -85,7 +85,7 @@
 			if (node == null) {
 				return;
 			}
-			if (node.className.startsWith("live_")) {
+			if (node.className.startsWith("_container")) {
 				return attachLiveObserver(node);
 			}
 		};
@@ -155,7 +155,7 @@
 		if (node == null) {
 			return;
 		}
-		const wrapper = node.querySelector('[class^="live_wrapper__"]');
+		const wrapper = node.querySelector('[class^="_wrapper_"]');
 		if (wrapper != null) {
 			const liveObserver = new MutationObserver((mutations) => {
 				for (const mutation of mutations) {
@@ -169,12 +169,12 @@
 			liveObserver.observe(wrapper, { childList: true });
 		}
 
-		const player = node.querySelector('[class^="live_information_player__"]');
+		const player = node.querySelector('[class^="_player_"]');
 		if (player != null) {
 			const playerObserver = new MutationObserver((mutations) => {
 				for (const mutation of mutations) {
 					for (const n of mutation.addedNodes) {
-						if (n.className?.startsWith?.("live_information_video_container__")) {
+						if (n.className?.startsWith?.("_contents_")) {
 							attachPlayerObserver(n, true);
 						}
 					}
@@ -184,7 +184,7 @@
 		}
 
 		return Promise.all([
-			attachPlayerObserver(node.querySelector('[class^="live_information_video_container__"]'), true),
+			attachPlayerObserver(node.querySelector('[class^="_contents_"]'), true),
 			initChatFeatures(node.querySelector("aside")),
 		]);
 	};
@@ -192,7 +192,7 @@
 	const initChatFeatures = async (chattingContainer) => {
 		if (!chattingContainer) return;
 
-		const SELECTOR = '[class*="live_chatting_header_fold__"] > [class^="live_chatting_header_button__"]';
+		const SELECTOR = '[class*="_fold_"] > [class^="_button_"]';
 
 		let executed = false;
 
