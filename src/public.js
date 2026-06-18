@@ -3,7 +3,7 @@
 	// console.log("[StelCount] chat list button initializing...");
 	const INIT_FLAG = "data-stc-chat-toggle-init";
 	const CONTAINER_SELECTOR = '[class*="_exist_fixed_message_"]';
-	const CHAT_SELECTOR = '[class^="_fixed_"]';
+	const CHAT_SELECTOR = '[class*="_fixed_"]';
 	const BTN_ID = "stc-chat-collapse-toggle-btn";
 	const STORAGE_KEY = "stc-chat-collapsed";
 
@@ -135,7 +135,7 @@
 	// console.log("[StelCount] rank list button initializing...");
 	const INIT_FLAG = "stc-data-ranking-toggle-init";
 	const CONTAINER_SELECTOR = "#aside-chatting";
-	const RANKING_SELECTOR = '[class^="_container_"]:not([class*=" "]):has([class^="_ranking_button_"])';
+	const RANKING_SELECTOR = '[class*="_container_"]:not([class*=" "]):has([class^="_ranking_button_"])';
 	const BTN_ID = "stc-rank-collapse-toggle-btn";
 	const STORAGE_KEY = "stc-rank-collapsed";
 
@@ -221,10 +221,8 @@
 	const observer = new MutationObserver(() => {
 		const container = document.querySelector(CONTAINER_SELECTOR);
 		if (!container) return;
-		console.log("container: ", container);
 
 		const rankWrapper = container.querySelector(RANKING_SELECTOR);
-		console.log("rankWrapper", rankWrapper);
 		const btn = container.querySelector(`#${BTN_ID}`);
 
 		// 채팅이 사라졌으면 init 플래그 리셋
