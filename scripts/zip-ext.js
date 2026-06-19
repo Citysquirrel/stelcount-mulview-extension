@@ -23,6 +23,23 @@ if (!version) {
 	process.exit(1);
 }
 
+// IS_DEV 검사
+const popupJsPath = path.join(projectRoot, "src/pages/popup.js");
+
+if (fs.existsSync(popupJsPath)) {
+	const popupContent = fs.readFileSync(popupJsPath, "utf-8");
+
+	if (/const\s+IS_DEV\s*=\s*true/.test(popupContent)) {
+		console.error("\n🚨 [치명적 오류] 패키징 중단! 🚨");
+		console.error("👉 popup.js의 IS_DEV 변수가 'true'로 설정되어 있습니다.");
+		console.error("👉 배포용 ZIP을 만들기 전에 반드시 'false'로 변경해주세요!\n");
+		process.exit(1);
+	}
+} else {
+	console.error("⚠️ popup.js 파일을 찾을 수 없습니다. 경로를 확인해주세요!");
+	process.exit(1);
+}
+
 const outputFileName = `${projectName}_${version}.zip`;
 const outputPath = path.join(projectRoot, "..", outputFileName);
 
