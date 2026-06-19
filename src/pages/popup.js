@@ -1,5 +1,5 @@
 //! 배포시 반드시 false
-const IS_DEV = true;
+const IS_DEV = false;
 
 const MATCH_URL = IS_DEV ? "*://localhost/*" : "*://stelcount.fans/*";
 const BASE_URL = IS_DEV ? "https://localhost:5173/multiview" : "https://stelcount.fans/multiview";

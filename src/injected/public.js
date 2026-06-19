@@ -91,7 +91,6 @@
 	// #region Observing
 	const observer = new MutationObserver(() => {
 		const container = document.querySelector(CONTAINER_SELECTOR);
-		console.log(container);
 		if (!container) return;
 
 		const chatWrapper = container.querySelector(CHAT_SELECTOR);
