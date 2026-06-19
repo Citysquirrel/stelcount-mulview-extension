@@ -2,8 +2,11 @@
 (() => {
 	// console.log("[StelCount] chat list button initializing...");
 	const INIT_FLAG = "data-stc-chat-toggle-init";
-	const CONTAINER_SELECTOR = '[class*="_exist_fixed_message_"]';
-	const CHAT_SELECTOR = '[class*="_fixed_"]';
+	const CONTAINER_SELECTOR = [
+		'[class^="live_chatting_list_container__"]',
+		'div[class*="_container_"][role="log"]',
+	].join(",");
+	const CHAT_SELECTOR = ['[class^="live_chatting_list_fixed__"]', '[class*="_fixed_"]'].join(",");
 	const BTN_ID = "stc-chat-collapse-toggle-btn";
 	const STORAGE_KEY = "stc-chat-collapsed";
 
@@ -88,6 +91,7 @@
 	// #region Observing
 	const observer = new MutationObserver(() => {
 		const container = document.querySelector(CONTAINER_SELECTOR);
+		console.log(container);
 		if (!container) return;
 
 		const chatWrapper = container.querySelector(CHAT_SELECTOR);
@@ -134,8 +138,12 @@
 (() => {
 	// console.log("[StelCount] rank list button initializing...");
 	const INIT_FLAG = "stc-data-ranking-toggle-init";
-	const CONTAINER_SELECTOR = "#aside-chatting";
-	const RANKING_SELECTOR = '[class*="_container_"]:not([class*=" "]):has([class^="_ranking_button_"])';
+	const CONTAINER_SELECTOR = ['[class^="live_chatting_container__"]', "#aside-chatting"];
+	const RANKING_SELECTOR = [
+		'[class^="live_chatting_ranking_container__"]',
+		'[class*="_container_"]:not([class*=" "]):has([class^="_ranking_button_"])',
+	];
+
 	const BTN_ID = "stc-rank-collapse-toggle-btn";
 	const STORAGE_KEY = "stc-rank-collapsed";
 

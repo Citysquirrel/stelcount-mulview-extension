@@ -107,7 +107,7 @@ browser.runtime.onMessageExternal.addListener((request, sender, sendResponse) =>
 // 캐시 및 요청 잠금을 위한 최상위 변수 (백그라운드가 살아있는 동안 유지됨)
 let fetchPromise = null;
 const CACHE_KEY = "naverFollowingsCache";
-const CACHE_EXPIRY = 1000 * 30; // 현재 30초
+const CACHE_EXPIRY = 1000 * 30;
 
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 	if (request.action === "fetchFollowings") {
@@ -178,9 +178,7 @@ async function fetchFollowings() {
 
 	const missingCookies = cookies.filter((c) => !c);
 	if (missingCookies.length > 0) {
-		throw new Error(
-			"일부 쿠키를 가져오지 못함. 기존에 네이버 로그인 된 상태에서도 본 에러가 발생한다면 개발자에게 문의 바랍니다.",
-		);
+		throw new Error("쿠키 없음");
 	}
 
 	const api = `https://api.chzzk.naver.com/service/v1/channels/followings${objectToUrlParams({

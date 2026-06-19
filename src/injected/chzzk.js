@@ -77,7 +77,7 @@
 			if (node == null) {
 				return;
 			}
-			if (node.className.startsWith("_container")) {
+			if (node.nodeType === 1 && node.matches('[class*="_container"], [class*="live_"]')) {
 				return attachLiveObserver(node);
 			}
 		};
@@ -147,7 +147,7 @@
 		if (node == null) {
 			return;
 		}
-		const wrapper = node.querySelector('[class^="_wrapper_"]');
+		const wrapper = node.querySelector('[class^="live_wrapper__"]', '[class^="_wrapper_"]');
 		if (wrapper != null) {
 			const liveObserver = new MutationObserver((mutations) => {
 				for (const mutation of mutations) {
@@ -161,12 +161,15 @@
 			liveObserver.observe(wrapper, { childList: true });
 		}
 
-		const player = node.querySelector('[class^="_player_"]');
+		const player = node.querySelector('[class^="live_information_player__"]', '[class^="_player_"]');
 		if (player != null) {
 			const playerObserver = new MutationObserver((mutations) => {
 				for (const mutation of mutations) {
 					for (const n of mutation.addedNodes) {
-						if (n.className?.startsWith?.("_contents_")) {
+						if (
+							n.className?.startsWith?.("live_information_video_container__") ||
+							n.className?.startsWith?.("_contents_")
+						) {
 							attachPlayerObserver(n, true);
 						}
 					}
@@ -176,7 +179,10 @@
 		}
 
 		return Promise.all([
-			attachPlayerObserver(node.querySelector('[class^="_contents_"]'), true),
+			attachPlayerObserver(
+				node.querySelector(['[class^="live_information_video_container__"]', '[class^="_contents_"]']),
+				true,
+			),
 			initChatFeatures(node.querySelector("aside")),
 		]);
 	};
@@ -184,7 +190,10 @@
 	const initChatFeatures = async (chattingContainer) => {
 		if (!chattingContainer) return;
 
-		const SELECTOR = '[class*="_fold_"] > [class^="_button_"]';
+		const SELECTOR = [
+			'[class*="live_chatting_header_fold__"] > [class^="live_chatting_header_button__"]',
+			'[class*="_fold_"] > [class^="_button_"]',
+		];
 
 		let executed = false;
 
@@ -256,6 +265,8 @@
 	//! 통나무 자동 클릭
 	const LOG_PREFIX = "[StelCount]";
 	const REWARD_NAME = "통나무";
+	const SELECTORS = ['button[class^="live_chatting_power_button_"]', '[class*="_container_"] > [class*="_button_"]'];
+	const COMBINED_SELECTOR = SELECTORS.join(", ");
 
 	// 이후 확장을 위한 로그 함수
 	function log(message, extra = null) {
@@ -280,25 +291,47 @@
 		log(`${REWARD_NAME} 수집 완료`);
 	}
 
-	//
-	document.querySelectorAll('button[class^="live_chatting_power_button_"]').forEach(clickReward);
+	function checkAndClick(node) {
+		if (node.textContent && node.textContent.includes("시청 통나무 파워 배달 완료")) {
+			clickReward(node);
+		}
+	}
 
-	// 통나무 버튼 추적
+	document.querySelectorAll(COMBINED_SELECTOR).forEach(checkAndClick);
+
 	const observer = new MutationObserver((mutations) => {
 		for (const mutation of mutations) {
 			for (const node of mutation.addedNodes) {
 				if (!(node instanceof HTMLElement)) continue;
 
-				// 버튼 자체가 추가된 경우
-				if (node.matches?.('button[class^="live_chatting_power_button_"]')) {
-					clickReward(node);
+				if (node.matches?.(COMBINED_SELECTOR)) {
+					checkAndClick(node);
 				}
 
-				// 부모에 묻어서 같이 추가된 경우
-				node.querySelectorAll?.('button[class^="live_chatting_power_button_"]').forEach(clickReward);
+				node.querySelectorAll?.(COMBINED_SELECTOR).forEach(checkAndClick);
 			}
 		}
 	});
+
+	//
+	// document.querySelectorAll('button[class^="live_chatting_power_button_"]').forEach(clickReward);
+
+	// // 통나무 버튼 추적
+	// const observer = new MutationObserver((mutations) => {
+	// 	for (const mutation of mutations) {
+	// 		for (const node of mutation.addedNodes) {
+	// 			if (!(node instanceof HTMLElement)) continue;
+
+	// 			// 버튼 자체가 추가된 경우
+	// 			if (node.matches?.('button[class^="live_chatting_power_button_"]')) {
+	// 				clickReward(node);
+	// 			}
+
+	// 			// 부모에 묻어서 같이 추가된 경우
+	// 			node.querySelectorAll?.('button[class^="live_chatting_power_button_"]').forEach(clickReward);
+	// 		}
+	// 	}
+	// });
 
 	observer.observe(document.body, {
 		childList: true,

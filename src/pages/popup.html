@@ -6,21 +6,163 @@
 		<link rel="stylesheet" href="popup.css" />
 	</head>
 	<body>
-		<div class="title-wrapper">
-			<img class="logo" src="../../images/icon.png" />
-		</div>
-		<div class="whole-container">
-			<div class="text-container">
-				<h3>기능</h3>
-				<p>- 브라우저가 네이버에 로그인되어 있는 경우 멀티뷰에서의 로그인 인증</p>
-				<p>- 새로운 방송을 띄울 때 자동으로 넓은 화면 전환 및 채팅창 제거 기능</p>
-				<p>- 채팅창 상단 고정 리스트 및 랭킹 숨기기/표시 버튼 추가</p>
-				<p>- 통나무 자동 수집(버튼 클릭)</p>
+		<header class="app-header">
+			<nav class="tab-nav">
+				<button class="tab-btn active" data-target="tab-followers" style="position: relative">
+					팔로워 연동<span class="beta-badge">BETA</span>
+				</button>
+				<button class="tab-btn" data-target="tab-info">기능 안내</button>
+			</nav>
+			<div class="header-actions">
+				<button id="header-shortcut-btn" class="icon-btn" title="Stelcount 멀티뷰 바로가기">
+					<svg
+						viewBox="0 0 24 24"
+						width="16"
+						height="16"
+						stroke="currentColor"
+						stroke-width="2"
+						fill="none"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+						<line x1="8" y1="21" x2="16" y2="21"></line>
+						<line x1="12" y1="17" x2="12" y2="21"></line>
+					</svg>
+				</button>
+				<button class="icon-btn" title="설정" disabled>
+					<svg
+						viewBox="0 0 24 24"
+						width="16"
+						height="16"
+						stroke="currentColor"
+						stroke-width="2"
+						fill="none"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<circle cx="12" cy="12" r="3"></circle>
+						<path
+							d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
+						></path>
+					</svg>
+				</button>
 			</div>
-			<div class="center-wrapper">
-				<button id="goto">멀티뷰 열기</button>
-			</div>
-		</div>
+		</header>
+
+		<main class="content-container">
+			<section id="tab-followers" class="tab-content active">
+				<div class="search-wrapper">
+					<input type="text" id="search-input" class="search-input" placeholder="스트리머 이름 검색..." />
+				</div>
+				<div class="list-controls">
+					<label class="checkbox-label">
+						<input type="checkbox" id="select-all" disabled />
+						전체 선택 (<span id="selected-count">0</span>)
+					</label>
+					<div class="status-text" id="loading-status">불러오는 중...</div>
+				</div>
+
+				<ul id="follower-list" class="follower-list"></ul>
+
+				<div class="btn-group">
+					<button id="sync-site-btn" class="primary-btn" disabled>사용자 설정과 연동</button>
+					<button id="new-tab-btn" class="secondary-btn" disabled>선택 항목 새 탭으로 열기</button>
+				</div>
+			</section>
+
+			<section id="tab-info" class="tab-content">
+				<div class="info-wrapper">
+					<h3>주요 기능 안내</h3>
+					<ul class="info-list">
+						<li>브라우저가 네이버에 로그인되어 있는 경우 멀티뷰에서의 로그인 인증 기능</li>
+						<li>새 방송을 띄울 때 넓은 화면 전환 및 채팅창 끄기 기능</li>
+						<li>채팅창 상단 고정 채팅 및 랭킹 숨기기/표시 버튼</li>
+						<li>통나무 자동 수집 기능</li>
+					</ul>
+				</div>
+				<div class="guide-wrapper">
+					<h3>확프 사용 가이드</h3>
+					<div class="accordion-list">
+						<div class="accordion-item">
+							<button class="accordion-header">
+								<span class="q-mark">Q.</span> 멀티뷰 내에서 로그인이 되지 않아요.
+								<svg
+									class="chevron"
+									viewBox="0 0 24 24"
+									width="16"
+									height="16"
+									stroke="currentColor"
+									stroke-width="2"
+									fill="none"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<polyline points="6 9 12 15 18 9"></polyline>
+								</svg>
+							</button>
+							<div class="accordion-body">
+								<p>
+									<span class="a-mark">A.</span> 확장 프로그램 설치 후 현재 재생중인 탭을 새로고침하거나, 브라우저를 한
+									번 재시작해주세요. 그래도 정상 로그인되지 않으면 본 확장앱을 우클릭하여 [확장앱(프로그램) 관리]로
+									들어갑니다. [권한] 탭에서 허용되지 않은 사이트 권한이 있는지 확인해주세요.
+								</p>
+							</div>
+						</div>
+
+						<div class="accordion-item">
+							<button class="accordion-header">
+								<span class="q-mark">Q.</span> 멀티뷰 창이 열리지 않아요.
+								<svg
+									class="chevron"
+									viewBox="0 0 24 24"
+									width="16"
+									height="16"
+									stroke="currentColor"
+									stroke-width="2"
+									fill="none"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<polyline points="6 9 12 15 18 9"></polyline>
+								</svg>
+							</button>
+							<div class="accordion-body">
+								<p>
+									<span class="a-mark">A.</span> 브라우저의 팝업 차단 설정이 활성화되어 있는지 확인해 주세요. 우측
+									상단의 주소창에서 팝업 차단을 해제하면 정상적으로 탭이 열립니다.
+								</p>
+							</div>
+						</div>
+
+						<div class="accordion-item">
+							<button class="accordion-header">
+								<span class="q-mark">Q.</span> 통나무 수집 버튼은 언제 눌러야 하나요?
+								<svg
+									class="chevron"
+									viewBox="0 0 24 24"
+									width="16"
+									height="16"
+									stroke="currentColor"
+									stroke-width="2"
+									fill="none"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<polyline points="6 9 12 15 18 9"></polyline>
+								</svg>
+							</button>
+							<div class="accordion-body">
+								<p>
+									<span class="a-mark">A.</span> 통나무 수집 버튼은 자동으로 눌러집니다. 통나무 수집 기록은 따로
+									팝업되거나 저장되지 않습니다.
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
 
 		<script src="./popup.js"></script>
 	</body>
