@@ -101,7 +101,7 @@ function renderFollowerList(list) {
 
 		li.innerHTML = `
             <input type="checkbox" class="item-checkbox" value="${channelId}">
-            <img class="profile-img" src="${channel.channelImageUrl ? channel.channelImageUrl + "?type=f40_40_na" : "../../images/default_profile.png"}" alt="profile">
+            <img class="profile-img" src="${channel.channelImageUrl ? channel.channelImageUrl + "?type=f40_40_na" : "../../images/icon.png"}" alt="profile">
             <div class="stream-info">
                 <div class="stream-header">
                     <span class="streamer-name">${channel.channelName}</span>
