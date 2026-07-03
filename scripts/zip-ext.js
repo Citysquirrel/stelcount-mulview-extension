@@ -3,6 +3,7 @@ const { exec } = require("child_process");
 const os = require("os");
 const path = require("path");
 const archiver = require("archiver");
+const readline = require("readline");
 
 const projectRoot = process.cwd();
 const projectName = path.basename(projectRoot);
@@ -46,31 +47,70 @@ const outputPath = path.join(projectRoot, "..", outputFileName);
 const output = fs.createWriteStream(outputPath);
 const archive = archiver("zip", { zlib: { level: 9 } });
 
-output.on("close", () => {
-	console.log(`✅ ZIP created: ${outputFileName}`);
-	console.log(`📦 Size: ${archive.pointer()} bytes`);
+if (fs.existsSync(outputPath)) {
+	const rl = readline.createInterface({
+		input: process.stdin,
+		output: process.stdout,
+	});
 
-	openFileInExplorer(outputPath);
-});
+	rl.question(
+		`⚠️ 동일한 이름의 파일이 이미 존재합니다. 배포시 버전을 확인해주세요: ${outputFileName}\n덮어쓰시겠습니까? (y/n): `,
+		(answer) => {
+			rl.close();
+			const response = answer.trim().toLowerCase();
 
-archive.on("error", (err) => {
-	console.error("❌ ZIP error:", err);
-	process.exit(1);
-});
+			if (response === "y" || response === "yes") {
+				console.log("🔄 기존 파일을 덮어쓰고 압축을 시작합니다...");
+				createZip();
+			} else {
+				console.log("🛑 작업을 취소했습니다.");
+				process.exit(0);
+			}
+		},
+	);
+} else {
+	// 파일이 없으면 바로 압축 시작
+	console.log("🚀 압축을 시작합니다...");
+	createZip();
+}
 
-archive.pipe(output);
+function createZip() {
+	const output = fs.createWriteStream(outputPath);
+	const archive = archiver("zip", { zlib: { level: 9 } });
 
-// 현재 폴더 전체 압축
-archive.glob("**/*", {
-	cwd: projectRoot,
-	ignore: [
-		"node_modules/**",
-		".git/**",
-		`${outputFileName}`, // 자기 자신 제외 - 불필요하지만 확실하게 예외처리
-	],
-});
+	output.on("close", () => {
+		console.log(`✅ ZIP created: ${outputFileName}`);
+		console.log(`📦 Size: ${archive.pointer()} bytes`);
 
-archive.finalize();
+		openFileInExplorer(outputPath);
+	});
+
+	archive.on("error", (err) => {
+		console.error("❌ ZIP error:", err);
+		process.exit(1);
+	});
+
+	archive.pipe(output);
+
+	// 현재 폴더 전체 압축
+	archive.glob("**/*", {
+		cwd: projectRoot,
+		ignore: [
+			"node_modules/**",
+			".git/**",
+			"scripts/**",
+			"manifest.firefox.json",
+			"package.json",
+			"package-lock.json",
+			".gitignore",
+			"README.md",
+			"LICENSE",
+			`${outputFileName}`, // 자기 자신 제외
+		],
+	});
+
+	archive.finalize();
+}
 
 function openFileInExplorer(filePath) {
 	const platform = os.platform();
