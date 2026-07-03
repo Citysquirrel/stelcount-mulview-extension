@@ -1,7 +1,7 @@
 //! 배포시 반드시 false
 const IS_DEV = false;
 
-const MATCH_URL = IS_DEV ? "*://localhost/*" : "*://stelcount.fans/*";
+const MATCH_URL = IS_DEV ? "*://localhost/multiview*" : "*://stelcount.fans/multiview*";
 const BASE_URL = IS_DEV ? "https://localhost:5173/multiview" : "https://stelcount.fans/multiview";
 
 let cachedFollowers = [];
