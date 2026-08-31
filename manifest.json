@@ -8,6 +8,7 @@
 	"host_permissions": [
 		"*://localhost/*",
 		"*://*.stelcount.fans/*",
+		"https://nid.naver.com/*",
 		"https://chzzk.naver.com/*",
 		"https://api.chzzk.naver.com/*"
 	],
