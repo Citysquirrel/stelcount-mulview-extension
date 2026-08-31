@@ -188,9 +188,6 @@ async function fetchFollowings() {
 		subscription: false,
 		followerCount: false,
 	})}`;
-	const [aut, ses] = cookies;
-	const NID_AUT = aut.value;
-	const NID_SES = ses.value;
 
 	const response = await fetch(api, {
 		method: "GET",

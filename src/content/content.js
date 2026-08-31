@@ -67,6 +67,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 // 사이트에서 확장 프로그램으로의 메시지 전달
 window.addEventListener("message", (event) => {
 	// 같은 도메인에서 온 특정 액션만 허용
+	if (event.origin !== window.location.origin) return;
 	if (event.data && event.data.action === "requestInitData") {
 		sendDataToReact();
 	}
