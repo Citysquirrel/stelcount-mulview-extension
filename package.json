@@ -10,7 +10,7 @@
 		"zip": "node scripts/zip-ext.js"
 	},
 	"devDependencies": {
-		"archiver": "^7.0.1",
+		"archiver": "^8.0.0",
 		"fs-extra": "^11.3.3"
 	}
 }
