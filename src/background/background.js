@@ -15,7 +15,12 @@ const COOKIES = [
 
 const checkPermission = async () => {
 	const granted = await browser.permissions.contains({
-		origins: ["*://*.stelcount.fans/*", "*://*.naver.com/*", "*://*.chzzk.naver.com/*"],
+		origins: [
+			"*://*.stelcount.fans/*",
+			"https://nid.naver.com/*",
+			"https://chzzk.naver.com/*",
+			"https://api.chzzk.naver.com/*",
+		],
 	});
 	if (!granted) {
 		browser.tabs.create({

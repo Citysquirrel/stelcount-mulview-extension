@@ -22,7 +22,9 @@ document.getElementById("apply").addEventListener("click", async () => {
 		});
 
 		if (granted) {
-			window.close();
+			setTimeout(() => {
+				window.close();
+			}, 100);
 		} else {
 			console.log("[StelCount] 사용자가 권한 요청을 거부했습니다.");
 		}
