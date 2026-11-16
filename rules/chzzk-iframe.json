@@ -1,0 +1,21 @@
+[
+	{
+		"id": 1,
+		"priority": 1,
+		"action": {
+			"type": "modifyHeaders",
+			"responseHeaders": [
+				{
+					"header": "content-security-policy",
+					"operation": "set",
+					"value": "frame-ancestors 'self' https://naver.com https://*.naver.com https://stelcount.fans"
+				}
+			]
+		},
+		"condition": {
+			"urlFilter": "|https://chzzk.naver.com/",
+			"initiatorDomains": ["stelcount.fans"],
+			"resourceTypes": ["sub_frame"]
+		}
+	}
+]
