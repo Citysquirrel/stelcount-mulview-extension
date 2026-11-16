@@ -13,9 +13,16 @@
 			]
 		},
 		"condition": {
-			"urlFilter": "|https://chzzk.naver.com/",
+			"regexFilter": "^https://chzzk\\.naver\\.com/live/[0-9a-f]{32}(/chat)?/?(\\?[^#]*)?$",
+			"isUrlFilterCaseSensitive": true,
 			"initiatorDomains": ["stelcount.fans"],
-			"resourceTypes": ["sub_frame"]
+			"resourceTypes": ["sub_frame"],
+			"responseHeaders": [
+				{
+					"header": "content-security-policy",
+					"values": ["frame-ancestors 'self' https://naver.com https://\\*.naver.com"]
+				}
+			]
 		}
 	}
 ]
