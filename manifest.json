@@ -5,7 +5,7 @@
 	"version": "2.0.4",
 	"minimum_chrome_version": "128",
 	"homepage_url": "https://stelcount.fans/multiview",
-	"permissions": ["activeTab", "cookies", "storage", "notifications", "declarativeNetRequestWithHostAccess"],
+	"permissions": ["cookies", "storage", "notifications", "declarativeNetRequestWithHostAccess"],
 	"declarative_net_request": {
 		"rule_resources": [
 			{
